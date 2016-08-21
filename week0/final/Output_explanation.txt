@@ -1,0 +1,27 @@
+The array elements are initialized with twice the value of their index numbers.
+
+=>So, the array becomes - 0, 2, 4, 6, 8
+
+Then, the base address of the array is sent to the the function f().
+With the concept of pointers, the array is traversed and 2 is added to each of
+the element of the array. This is achieved by Call by Reference.
+
+For the variable 'b', no change occurs as it undergoes Call by Value and its
+value gets copied and not its address, unlike that of the array. 
+
+=>So, the array becomes - 2, 4, 6, 8, 10
+
+Now, a new line is printed and the array elements are displayed, each element in
+separate line.
+
+Then, again a new line character is printed shifting the cursor to a new line
+and the value of the untouched variable 'b' is printed.
+
+=>So, the output obtained is -
+
+2
+4
+6
+8
+10
+16

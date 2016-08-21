@@ -1,0 +1,21 @@
+Data read in 3.365000 ms (Iterative method)
+Thresholding done in 1022.575000 ms (Iterative method)
+
+Data read in 3.134000 ms (Iterative method)
+Thresholding done in 1031.640000 ms (Iterative method)
+
+Data read in 192.777000 ms (Iterative method)
+Thresholding done in 173831.474000 ms (Iterative method)
+
+Data read in 7530.205000 ms (Histogram method)
+Thresholding done in 1.693000 ms (Histogram method)
+
+Data read in 8078.261000 ms (Histogram method)
+Thresholding done in 1.258000 ms (Histogram method)
+
+Data read in 3.518000 ms (Iterative method)
+Thresholding done in 1122.496000 ms (Iterative method)
+
+Data read in 3.234000 ms (Histogram method)
+Thresholding done in 1.192000 ms (Histogram method)
+
