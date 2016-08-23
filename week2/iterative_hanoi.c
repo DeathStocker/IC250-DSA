@@ -21,6 +21,14 @@ int solve_hanoi(int disks, stack* src, stack* aux, stack* dest)
 		a  = temp;
 	}
 
+	int i;
+	/*
+	   Pushes the larger disks first to the source.
+	 */
+	for (i = disks; i >= 1; i--)
+		push(src, i);
+}
+
 int main()
 {
 	printf("Enter the number of disks = ");
