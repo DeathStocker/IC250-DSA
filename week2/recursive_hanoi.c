@@ -19,7 +19,7 @@ int main()
 	int disk;
 	scanf("%d", &disk);
 
-	move_disk(disk, 'A', 'B', 'C');
+	move_disk(disk, 'A', 'C', 'B');
 
 	return 0;
 }
