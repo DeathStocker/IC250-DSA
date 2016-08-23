@@ -27,6 +27,22 @@ int solve_hanoi(int disks, stack* src, stack* aux, stack* dest)
 	 */
 	for (i = disks; i >= 1; i--)
 		push(src, i);
+
+	int no_of_moves = pow(2, disks) - 1;
+	for (i = 1; i <= no_of_moves; i++) {
+		if (i % 3 == 1)
+			//move_disk(i, src, dest, s, d);
+
+		else if (i % 3 == 2)
+			//move_disk(i, src, aux, s, a);
+
+		else if (i % 3 == 0)
+			//move_disk(i, aux, dest, a, d);
+	}
+	printf("\nTotal number of steps required to solve this problem are = "
+	       "%d\n", no_of_moves);
+
+	return 0;
 }
 
 int main()
