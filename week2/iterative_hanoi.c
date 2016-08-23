@@ -16,6 +16,11 @@ int move_disk(int count, stack* src, stack* dest, char s, char d)
 	int src_top = pop(src);
 	int dest_top = pop(dest);
 
+	/*
+	   -1 denotes an empty stack/peg.
+	   The following basically put a smaller disk on a bigger disk
+	   or any sized disk in an already empty peg.
+	 */
 	if (src_top == -1) {
 		push(src, dest_top);
 		display_move(count, d, s, dest_top);
@@ -35,6 +40,9 @@ int move_disk(int count, stack* src, stack* dest, char s, char d)
 	return 0;
 }
 
+/*
+   Solves the Tower of Hanoi iteratively.
+ */
 int solve_hanoi(int disks, stack* src, stack* aux, stack* dest)
 {
 	char s = 'A', d = 'B', a = 'C'; // Source, destination, and auxillary pegs.
@@ -55,6 +63,10 @@ int solve_hanoi(int disks, stack* src, stack* aux, stack* dest)
 	for (i = disks; i >= 1; i--)
 		push(src, i);
 
+	/*
+	   Checks the position of the current peg and changes the source,
+	   destination, and auxillary pegs accordingly.
+	 */
 	int no_of_moves = pow(2, disks) - 1;
 	for (i = 1; i <= no_of_moves; i++) {
 		if (i % 3 == 1)

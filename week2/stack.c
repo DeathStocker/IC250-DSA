@@ -20,7 +20,6 @@ int is_empty(stack* s)
 	return 0;
 }
 
-
 /*
    "Pushes" the given value to the top of the stack and changes the top.
  */
@@ -44,7 +43,6 @@ int pop(stack* s)
 	s->top--;
 	return value;
 }
-
 
 /*
    Creates a stack of the given capacity.
