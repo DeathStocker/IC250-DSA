@@ -3,14 +3,17 @@
 int move_disk(int disk, char source, char dest, char aux)
 {
 	int static count = 0;
-	if(disk == 1) {
+
+	if (disk == 1) {
 		count++;
-		printf("[%d] Move disk %d from peg %c to peg %c.\n", count, disk, source, dest);
+		printf("[%d] Move disk %d from peg %c to peg %c.\n",
+		       count, disk, source, dest);
 		return count;
 	}
 	move_disk(disk - 1, source, aux, dest);
 	count++;
-	printf("[%d] Move disk %d from peg %c to peg %c.\n", count, disk, source, dest);
+	printf("[%d] Move disk %d from peg %c to peg %c.\n",
+	       count, disk, source, dest);
 	move_disk(disk - 1, aux, dest, source);
 
 	return count;
@@ -22,12 +25,14 @@ int main()
 	int disk;
 	scanf("%d", &disk);
 
-	if(disk < 1) {
+	if (disk < 1) {
 		printf("Invalid number of disks.\n");
 		return 1;
 	}
 
 	int count = move_disk(disk, 'A', 'C', 'B');
-	printf("\nTotal number of steps required to solve this problem are = %d\n", count);
+	printf("\nTotal number of steps required to solve this problem are = "
+	       "%d\n", count);
+
 	return 0;
 }
