@@ -19,3 +19,28 @@ int is_empty(stack* s)
 		return 1;
 	return 0;
 }
+
+
+/*
+   "Pushes" the given value to the top of the stack and changes the top.
+ */
+int push(stack *s, int value)
+{
+	if (is_full(s))
+		return -1;
+	s->arr[++s->top] = value;
+
+	return 0;
+}
+
+/*
+   "Pops" the topmost item from the stack.
+ */
+int pop(stack* s)
+{
+	if (is_empty(s) == 1)
+		return -1;
+	int value = s->arr[s->top];
+	s->top--;
+	return value;
+}
