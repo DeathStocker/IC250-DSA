@@ -2,18 +2,18 @@
 
 int move_disk(int disk, char source, char dest, char aux)
 {
-	int static count = 1;
+	int static count = 0;
 	if(disk == 1) {
-		printf("[%d] Move disk %d from peg %c to peg %c.\n", count, disk, source, dest);
 		count++;
-		return count - 1;
+		printf("[%d] Move disk %d from peg %c to peg %c.\n", count, disk, source, dest);
+		return count;
 	}
 	move_disk(disk - 1, source, aux, dest);
-	printf("[%d] Move disk %d from peg %c to peg %c.\n", count, disk, source, dest);
 	count++;
+	printf("[%d] Move disk %d from peg %c to peg %c.\n", count, disk, source, dest);
 	move_disk(disk - 1, aux, dest, source);
 
-	return count - 1;
+	return count;
 }
 
 int main()
