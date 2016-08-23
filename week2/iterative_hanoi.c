@@ -15,6 +15,24 @@ int move_disk(int count, stack* src, stack* dest, char s, char d)
 {
 	int src_top = pop(src);
 	int dest_top = pop(dest);
+
+	if (src_top == -1) {
+		push(src, dest_top);
+		display_move(count, d, s, dest_top);
+	} else if (dest_top == -1) {
+		push(dest, src_top);
+		display_move(count, s, d, src_top);
+	} else if (src_top > dest_top) {
+		push(src, src_top);
+		push(src, dest_top);
+		display_move(count, d, s, dest_top);
+	} else {
+		push(dest, dest_top);
+		push(dest, src_top);
+		display_move(count, s, d, src_top);
+	}
+
+	return 0;
 }
 
 int solve_hanoi(int disks, stack* src, stack* aux, stack* dest)
