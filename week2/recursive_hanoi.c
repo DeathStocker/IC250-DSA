@@ -22,6 +22,11 @@ int main()
 	int disk;
 	scanf("%d", &disk);
 
+	if(disk < 1) {
+		printf("Invalid number of disks.\n");
+		return 1;
+	}
+
 	int count = move_disk(disk, 'A', 'C', 'B');
 	printf("\nTotal number of steps required to solve this problem are = %d\n", count);
 	return 0;
