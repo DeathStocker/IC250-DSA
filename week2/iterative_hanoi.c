@@ -8,9 +8,18 @@ void display_move(int count, char source, char dest, int disk)
 	printf("[%d] Move the disk %d from %c to %c\n", count, disk, source, dest);
 }
 
+/*
+   Legally moves the disk from source to destination or the other way around.
+ */
+int move_disk(int count, stack* src, stack* dest, char s, char d)
+{
+	int src_top = pop(src);
+	int dest_top = pop(dest);
+}
+
 int solve_hanoi(int disks, stack* src, stack* aux, stack* dest)
 {
-	char s = 'A', d = 'B', a = 'C';
+	char s = 'A', d = 'B', a = 'C'; // Source, destination, and auxillary pegs.
 
 	/*
 	   Interchanging destination and auxillary if number of disks is even.
@@ -31,13 +40,13 @@ int solve_hanoi(int disks, stack* src, stack* aux, stack* dest)
 	int no_of_moves = pow(2, disks) - 1;
 	for (i = 1; i <= no_of_moves; i++) {
 		if (i % 3 == 1)
-			//move_disk(i, src, dest, s, d);
+			move_disk(i, src, dest, s, d);
 
 		else if (i % 3 == 2)
-			//move_disk(i, src, aux, s, a);
+			move_disk(i, src, aux, s, a);
 
 		else if (i % 3 == 0)
-			//move_disk(i, aux, dest, a, d);
+			move_disk(i, aux, dest, a, d);
 	}
 	printf("\nTotal number of steps required to solve this problem are = "
 	       "%d\n", no_of_moves);
