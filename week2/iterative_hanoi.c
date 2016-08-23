@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "stack.h"
 
 /*
    Prints the move to be executed for the solution

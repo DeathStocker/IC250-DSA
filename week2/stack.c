@@ -44,3 +44,18 @@ int pop(stack* s)
 	s->top--;
 	return value;
 }
+
+
+/*
+   Creates a stack of the given capacity.
+ */
+stack* create_stack(unsigned capacity)
+{
+	stack* s = (stack*)malloc(sizeof(stack));
+
+	s->capacity = capacity;
+	s->top = -1;
+	s->arr = (int*)malloc(s->capacity * sizeof(int));
+
+	return s;
+}
