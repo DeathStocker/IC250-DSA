@@ -1,5 +1,13 @@
 #include <stdio.h>
 
+/*
+   Prints the move to be executed for the solution
+ */
+void display_move(int count, char source, char dest, int disk)
+{
+	printf("[%d] Move the disk %d from %c to %c\n", count, disk, source, dest);
+}
+
 int main()
 {
 	printf("Enter the number of disks = ");
