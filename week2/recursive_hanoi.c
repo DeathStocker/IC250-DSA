@@ -11,3 +11,14 @@ int move_disk(int disk, char source, char dest, char aux)
 
 	return 0;
 }
+
+int main()
+{
+	printf("Enter the number of disks = ");
+	int disk;
+	scanf("%d", &disk);
+
+	move_disk(disk, 'A', 'B', 'C');
+
+	return 0;
+}
