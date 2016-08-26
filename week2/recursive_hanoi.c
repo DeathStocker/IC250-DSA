@@ -1,3 +1,9 @@
+/*
+   Name - Utkarsh Kunwar
+   Roll No. - B15338
+   IC-250 Week - 1
+ */
+
 #include <stdio.h>
 
 int move_disk(int disk, char source, char dest, char aux)
