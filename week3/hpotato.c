@@ -1,3 +1,9 @@
+/*
+   Name - Utkarsh Kunwar
+   Roll No. - B15338
+   IC-250 Week - 3
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <glib.h>
