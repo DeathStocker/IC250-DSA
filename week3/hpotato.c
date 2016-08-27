@@ -2,27 +2,36 @@
 #include <stdlib.h>
 #include <glib.h>
 
-int passThePotato(GQueue* children, int iter)
+void display(int count, int pos, int num_child, int iter)
+{
+	if(count == iter)
+		printf("[%d] Firstly, the person at position %d "
+		"is removed.\n", (count/iter), pos);
+	else if (count == iter * (num_child - 1))
+		printf("[%d] Finally, the person at position %d "
+		"is removed.\n", (count/iter), pos);
+	else
+		printf("[%d] Then, the person at position %d "
+		"is removed.\n", (count/iter), pos);
+
+}
+
+int passThePotato(GQueue* children, int n, int iter)
 {
 	int c = 1;
 	while(g_queue_get_length(children) > 1) {
 		// int i;
-		int *arr;
+		int *val;
+		val = malloc(sizeof(*val));
 
-		arr = malloc(sizeof(*arr));
-		arr = (int*)(g_queue_pop_head(children));
+		val = (int*)(g_queue_pop_head(children));
+
 		if(c % iter != 0)
-			g_queue_push_tail(children, arr);
+			g_queue_push_tail(children, val);
 		else
-			printf("%d got eliminated.\n", *arr);
+			display(c, *val, n, iter);
 		c++;
-		// for(i = 0; i < iter - 1; i++) {
-		//
-		// }
-
 	}
-
-	printf("winner should be = %d\n", *(int*)(children->head->data));
 
 	int winner = *(int*)(g_queue_pop_head(children));
 
@@ -38,23 +47,25 @@ int main()
 
 	GQueue* children = g_queue_new();
 
-	int* arr;
+	int* val;
 
 	int i;
 	for(i = 0; i < n; i++)
 	{
-		arr = malloc(sizeof(*arr));
-		*arr = i + 1;
-		g_queue_push_tail(children, arr);
+		val = malloc(sizeof(*val));
+		*val = i + 1;
+		g_queue_push_tail(children, val);
 	}
 
-	int winner = passThePotato(children, iter);
+	printf("\nThe removal sequence is as follows -\n\n");
+
+	int winner = passThePotato(children, n, iter);
 
 	// printf("\nThe removal sequence is as follows - \n\n");
-	printf("But the Winner = %d\n", winner);
+	printf("\nHence, the person at position %d survives.\n", winner);
 
 	g_queue_free(children);
-	free(arr);
+	free(val);
 
 	return 0;
 }
