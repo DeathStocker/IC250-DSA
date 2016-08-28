@@ -1,5 +1,14 @@
+/*
+   Name - Utkarsh Kunwar
+   Roll No. - B15338
+   IC-250 Week - 3
+ */
+
 #include "stack.h"
 
+/*
+   Transfers the contents of one stack to another in the reverse order.
+ */
 int transfer_stack(stack* src, stack* dest)
 {
 	int count = 0;
@@ -13,6 +22,9 @@ int transfer_stack(stack* src, stack* dest)
 	return count;
 }
 
+/*
+   Processes the queue according to the users choice.
+ */
 int process_queue(stack* queue, stack* temp, int ch)
 {
 
@@ -97,6 +109,9 @@ int process_queue(stack* queue, stack* temp, int ch)
 	return 0;
 }
 
+/*
+   Takes input from the user in a menu format.
+ */
 int input(stack* queue, stack* temp)
 {
 	while (1) {
@@ -116,7 +131,7 @@ int input(stack* queue, stack* temp)
 		int ch;
 		scanf("%d", &ch);
 
-		clear();
+		clear();        // Clears the screen
 
 		if (process_queue(queue, temp, ch) == 1)
 			break;
