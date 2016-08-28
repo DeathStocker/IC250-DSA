@@ -8,7 +8,6 @@
 #define STACK_H
 
 #include <stdio.h>
-#include <math.h>
 #include <stdlib.h>
 
 /*
