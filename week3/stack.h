@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define clear() printf("\033[H\033[J")
+
 /*
    User defined variable for stack
  */
