@@ -6,8 +6,10 @@
 # from https://github.com/DeathStocker
 
 CC=gcc
-CFLAGS=-c -Wall
+CFLAGS=-c -Wall `pkg-config --cflags --libs glib-2.0`
 LFLAGS=-Wall
+
+GLIB=-lglib-2.0
 
 DFLAGS=-g -Wextra -Werror
 
@@ -15,17 +17,19 @@ RM=rm
 RMFLAGS=-f
 
 # Source files in the project. Append new files here.
-SRCS=queue_stack.c stack.c
+SRCS1=hpotato.c
+SRCS2=queue_stack.c stack.c
 
 # Create object files list from source files list.
-OBJS= $(SRCS:.c=.o)
+OBJS1= $(SRCS1:.c=.o)
+OBJS2= $(SRCS2:.c=.o)
 
-all: queue_stack
+all: queue_stack hpotato
 all: clean-objects
 
 # Clean completely wipes the directory of all executables and objects
 clean: clean-objects
-	$(RM) $(RMFLAGS) vel_ver
+	$(RM) $(RMFLAGS) queue_stack hpotato
 
 # Only removes objects, not the final executable
 clean-objects:
@@ -35,8 +39,13 @@ debug: CFLAGS+=$(DFLAGS)
 debug: LFLAGS+=$(DFLAGS)
 debug: all
 
-queue_stack: $(OBJS)
-	$(CC) $(LFLAGS) $(OBJS) -o queue_stack
+hpotato: $(OBJS1)
+	$(CC) $(LFLAGS) $(OBJS1) -o hpotato $(GLIB)
+	make clean-objects
+
+queue_stack: $(OBJS2)
+	$(CC) $(LFLAGS) $(OBJS2) -o queue_stack
+	make clean-objects
 
 # The following magic code is from here:
 # http://www.cs.swarthmore.edu/~newhall/unixhelp/howto_makefiles.html
