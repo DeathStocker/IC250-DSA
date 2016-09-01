@@ -1,15 +1,16 @@
 /*
    Name - Utkarsh Kunwar
    Roll No. - B15338
-   IC-250 Week - 2
+   IC-250 Week - 3 (File taken from Week - 2)
  */
 
 #ifndef STACK_H
 #define STACK_H
 
 #include <stdio.h>
-#include <math.h>
 #include <stdlib.h>
+
+#define clear() printf("\033[H\033[J")
 
 /*
    User defined variable for stack

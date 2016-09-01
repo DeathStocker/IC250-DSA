@@ -1,7 +1,7 @@
 /*
    Name - Utkarsh Kunwar
    Roll No. - B15338
-   IC-250 Week - 2
+   IC-250 Week - 3 (File taken from Week - 2)
  */
 
 #include "stack.h"
