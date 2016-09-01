@@ -25,7 +25,6 @@ OBJS1= $(SRCS1:.c=.o)
 OBJS2= $(SRCS2:.c=.o)
 
 all: queue_stack hpotato
-all: clean-objects
 
 # Clean completely wipes the directory of all executables and objects
 clean: clean-objects
