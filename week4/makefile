@@ -17,18 +17,18 @@ RM=rm
 RMFLAGS=-f
 
 # Source files in the project. Append new files here.
-SRCS1=pal.c
-#SRCS2=queue_stack.c stack.c
+SRCS1=pal.c pal_func.c
+SRCS2=reverse_stack.c reverse_stack_func.c stack.c
 
 # Create object files list from source files list.
 OBJS1= $(SRCS1:.c=.o)
 OBJS2= $(SRCS2:.c=.o)
 
-all: pal
+all: pal reverse_stack
 
 # Clean completely wipes the directory of all executables and objects
 clean: clean-objects
-	$(RM) $(RMFLAGS) pal
+	$(RM) $(RMFLAGS) pal reverse_stack
 
 # Only removes objects, not the final executable
 clean-objects:
@@ -42,9 +42,9 @@ pal: $(OBJS1)
 	$(CC) $(LFLAGS) $(OBJS1) -o pal $(GLIB)
 	make clean-objects
 
-#queue_stack: $(OBJS2)
-#	$(CC) $(LFLAGS) $(OBJS2) -o queue_stack
-#	make clean-objects
+reverse_stack: $(OBJS2)
+	$(CC) $(LFLAGS) $(OBJS2) -o reverse_stack $(GLIB)
+	make clean-objects
 
 # The following magic code is from here:
 # http://www.cs.swarthmore.edu/~newhall/unixhelp/howto_makefiles.html
