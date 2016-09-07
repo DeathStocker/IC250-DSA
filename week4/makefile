@@ -19,16 +19,18 @@ RMFLAGS=-f
 # Source files in the project. Append new files here.
 SRCS1=pal.c pal_func.c
 SRCS2=reverse_stack.c reverse_stack_func.c stack.c
+SRCS3=stack_queue.c stack_queue_func.c
 
 # Create object files list from source files list.
 OBJS1= $(SRCS1:.c=.o)
 OBJS2= $(SRCS2:.c=.o)
+OBJS3= $(SRCS3:.c=.o)
 
-all: pal reverse_stack
+all: pal reverse_stack stack_queue
 
 # Clean completely wipes the directory of all executables and objects
 clean: clean-objects
-	$(RM) $(RMFLAGS) pal reverse_stack
+	$(RM) $(RMFLAGS) pal reverse_stack stack_queue
 
 # Only removes objects, not the final executable
 clean-objects:
@@ -44,6 +46,10 @@ pal: $(OBJS1)
 
 reverse_stack: $(OBJS2)
 	$(CC) $(LFLAGS) $(OBJS2) -o reverse_stack $(GLIB)
+	make clean-objects
+
+stack_queue: $(OBJS3)
+	$(CC) $(LFLAGS) $(OBJS3) -o stack_queue $(GLIB)
 	make clean-objects
 
 # The following magic code is from here:

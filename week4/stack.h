@@ -8,7 +8,7 @@
 
 
 typedef struct _Stack {
-	GSList *head;
+	GSList* head;
 } Stack;
 
 Stack* stack_new();

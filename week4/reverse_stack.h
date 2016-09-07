@@ -1,10 +1,14 @@
-#ifndef PAL_H
-#define PAL_H
+#ifndef REVERSE_STACK_H
+#define REVERSE_STACK_H
 
+#include <stdio.h>
+#include <string.h>
+#include <glib.h>
+#include <stdlib.h>
 #include "stack.h"
 
-GSList* stackify(char* s, int length);
+int* remove_bottom(Stack* stack);
 
-char* rev_string(GSList* str, int length);
+void reverse_stack(Stack* stack);
 
 #endif
