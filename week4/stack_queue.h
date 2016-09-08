@@ -1,3 +1,9 @@
+/*
+   Name - Utkarsh Kunwar
+   Roll No. - B15338
+   IC-250 Week - 4
+ */
+
 #ifndef STACK_QUEUE_H
 #define STACK_QUEUE_H
 

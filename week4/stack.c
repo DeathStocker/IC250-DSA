@@ -1,5 +1,10 @@
-#include "stack.h"
+/*
+   Name - Utkarsh Kunwar
+   Roll No. - B15338
+   IC-250 Week - 4
+ */
 
+#include "stack.h"
 
 Stack* stack_new()
 {

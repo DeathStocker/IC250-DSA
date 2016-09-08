@@ -1,3 +1,9 @@
+/*
+   Name - Utkarsh Kunwar
+   Roll No. - B15338
+   IC-250 Week - 4
+ */
+
 #ifndef REVERSE_STACK_H
 #define REVERSE_STACK_H
 
