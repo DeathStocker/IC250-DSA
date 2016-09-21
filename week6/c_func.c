@@ -68,24 +68,27 @@ void printList(node *head, int verbose_flag)
 {
 	node *iterator = head;
 
-	int i = 1;
-
 	while (iterator != NULL) {
 		if (verbose_flag == 0)
-			printf("[%d] %d [Random-> %d ]\n", i, iterator->label,
+			printf("[%d] [Random-> [%d]]\n |\n |\nV", iterator->label,
 			       iterator->random->label);
 		else
-			printf("[%d] %d (%p)\t[Random-> %d (%p)]\n", i,
+			printf("[%d] (%p)\t[Random-> [%d]\n |\n |\nV(%p)]\n",
 			       iterator->label, iterator, iterator->random->label,
 			       iterator->random);
 		iterator = iterator->next;
-		i++;
 	}
 	printf("\n");
 }
 
-node* createList()
+node* createList(int count)
 {
+	if (count == 0) {
+		clear();
+		printf("No elements in the list.\n");
+		return NULL;
+	}
+
 	int i = 1;
 	node* head = createNode(0);
 
@@ -99,25 +102,10 @@ node* createList()
 
 	printf("Enter the labels of the nodes [+ve Integers] - \nEnter [0] or"
 	       " [-ve int] to EXIT.\n\n");
-	while (1) {
-		printf("[%d] Node Value = ", i);
-		int val;
-		scanf("%d", &val);
-
-		if (val <= 0)
-			break;
-
-		iterator->next = createNode(val);
+	while (i <= count) {
+		iterator->next = createNode(i);
 		iterator = iterator->next;
 		i++;
-	}
-
-	int num_nodes = i - 1;
-
-	if (num_nodes == 0) {
-		clear();
-		printf("No elements in the list.\n");
-		return NULL;
 	}
 
 	head = head->next;
@@ -127,10 +115,10 @@ node* createList()
 	printf("\n\nEnter the position to point the random pointers to - \n");
 	while (iterator) {
 		int position;
-		printf("[%d] Random Position = ", i);
+		printf("[%d] ------> ", i);
 		scanf("%d", &position);
 
-		if (position > num_nodes || position < 1) {
+		if (position > count || position < 1) {
 			clear();
 			printf("Position is invalid.\n");
 			return NULL;

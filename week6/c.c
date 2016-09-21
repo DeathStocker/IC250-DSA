@@ -9,7 +9,12 @@ int main(int argc, char* argv[])
 	else
 		printf("Run with -v or --verbose flag for address details.\n\n");
 
-	node *head = createList();
+
+	printf("Enter the number of nodes = ");
+	int count;
+	scanf("%d", &count);
+
+	node *head = createList(count);
 
 	if (head == NULL) {
 		printf("Error encountered. Exitting.\n");
