@@ -1,3 +1,7 @@
+// Name - Utkarsh Kunwar
+// Roll No. - B15338
+// IC-250 Week - 6
+
 #ifndef B_H
 #define B_H
 

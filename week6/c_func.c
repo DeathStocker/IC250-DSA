@@ -1,3 +1,7 @@
+// Name - Utkarsh Kunwar
+// Roll No. - B15338
+// IC-250 Week - 6
+
 #include "c.h"
 
 /*
@@ -70,15 +74,15 @@ void printList(node *head, int verbose_flag)
 
 	while (iterator != NULL) {
 		if (verbose_flag == 0)
-			printf("[%d] [Random-> [%d]]\n |\n |\nV", iterator->label,
+			printf("[%d] [Random-> [%d]]\n |\n V\n", iterator->label,
 			       iterator->random->label);
 		else
-			printf("[%d] (%p)\t[Random-> [%d]\n |\n |\nV(%p)]\n",
+			printf("[%d] (%p)\t[Random-> [%d] (%p)]\n |\n V\n",
 			       iterator->label, iterator, iterator->random->label,
 			       iterator->random);
 		iterator = iterator->next;
 	}
-	printf("\n");
+	printf("NULL\n\n");
 }
 
 node* createList(int count)

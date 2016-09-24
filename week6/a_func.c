@@ -1,3 +1,7 @@
+// Name - Utkarsh Kunwar
+// Roll No. - B15338
+// IC-250 Week - 6
+
 #include "a.h"
 
 void swapPointers(int* a, int* b)
