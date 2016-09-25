@@ -200,6 +200,38 @@ double* calc_theta_exact(double delta_x, double beta, int N)
 	return theta_exact;
 }
 
+
+int print_to_file(double* theta, double* theta_exact, int N, double delta_x)
+{
+	int i;
+	double count = 0.0;
+
+	FILE* fp = fopen("results.dat", "w");
+
+	if (fp == NULL) {
+		printf("Cannot open file for writing. Exitting.\n");
+		return FILE_ERR;
+	}
+	fprintf(fp, "#delta_x  theta   theta_exact\n\n");
+
+	for (i = 0; i < N; i++, count += delta_x)
+		fprintf(fp, "%lf %lf %lf\n", count, theta[i], theta_exact[i]);
+
+	fclose(fp);
+
+	return 0;
+}
+
+void calc_size_heap(double* a, double* b, double* d, double** mat, double** aug,
+		    double* r, double* res, double* theta_exact, int N)
+{
+	double space = sizeof(a) * (N - 1) + sizeof(b) * (N - 1) + sizeof(d) * N
+		       + sizeof(mat) * (N * N) + sizeof(aug) * (N * (N + 1))
+		       + sizeof(res) * N + sizeof(r) * N + sizeof(theta_exact) * N;
+
+	printf("Space used = %.3lf KB\n", space / 1000);
+}
+
 int main()
 {
 	printf("Enter the value of N = ");
@@ -225,28 +257,27 @@ int main()
 	if (isTriDiagonal(mat, N))
 		printf("Matrix is tridiagonal.\n");
 
-	printf("Matrix = \n");
-	display_matrix(mat, N, N);
+	//printf("Matrix = \n");
+	//display_matrix(mat, N, N);
 
 	double** aug = create_aug_matrix(mat, r, N, N + 1);
 
-	printf("Augmented Matrix = \n");
-	display_matrix(aug, N, N + 1);
+	//printf("Augmented Matrix = \n");
+	//display_matrix(aug, N, N + 1);
 
 	double* res = gauss_eliminate(aug, N);
 
-	printf("Results =\n");
-	display_array(res, N);
+	//printf("Results =\n");
+	//display_array(res, N);
 
-	int space = sizeof(a) * (N - 1) + sizeof(b) * (N - 1) + sizeof(d) * N
-		    + sizeof(mat) * (N * N) + sizeof(aug) * (N * (N + 1))
-		    + sizeof(res) * N + sizeof(r) * N;
-
-	printf("Space used = %d bytes\n", space);
 
 	double* theta_exact = calc_theta_exact(delta_x, beta, N);
-	printf("Analytical =\n");
-	display_array(theta_exact, N);
+	//printf("Analytical =\n");
+	//display_array(theta_exact, N);
+
+	print_to_file(res, theta_exact, N, delta_x);
+
+	calc_size_heap(a, b, d, mat, aug, r, res, theta_exact, N);
 
 	// Freeing all the pointers.
 	free(res);
