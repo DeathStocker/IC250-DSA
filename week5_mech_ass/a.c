@@ -5,25 +5,9 @@
 #define FILE_ERR 1
 
 /*
-   Contains the coordinates of the element.
+   Prints calloc() error message.
  */
-typedef struct _coordinates {
-	int x;
-	int y;
-} coordinates;
-
-/*
-   Contains the position as well as the value of the element.
- */
-typedef struct _tuple {
-	coordinates pos;
-	int val;
-} tuple;
-
-/*
-   Prints malloc() error message.
- */
-int err_malloc()
+int err_calloc()
 {
 	printf("Error allocating memory.\nExitting.\n");
 	return FILE_ERR;
@@ -35,13 +19,13 @@ int err_malloc()
 double** create_matrix(int n, int m)
 {
 	int i;
-	double **arr = malloc(n * sizeof(double*));
+	double **arr = calloc(n, sizeof(double*));
 
 	if (arr == NULL)
 		return NULL;
 
 	for (i = 0; i < n; i++) {
-		arr[i] = malloc(m * sizeof(double));
+		arr[i] = calloc(m, sizeof(double));
 		if (arr[i] == NULL)
 			return NULL;
 	}
@@ -69,14 +53,14 @@ void free_matrix(double** arr, int n, int m)
  */
 double** create_aug_matrix(double** mat, double* arr, int m, int n)
 {
-	double** aug = create_matrix(m, n + 1);
+	double** aug = create_matrix(m, n);
 
 	if (aug == NULL)
 		return NULL;
 
 	int i, j;
 	for (i = 0; i < m; i++)
-		for (j = 0; j < n; j++)
+		for (j = 0; j < n - 1; j++)
 			aug[i][j] = mat[i][j];
 	for (i = 0; i < m; i++)
 		aug[i][n - 1] = arr[i];
@@ -151,7 +135,7 @@ double* gauss_eliminate(double** aug, int n)
 	int i, j, k;
 	double c, sum = 0.0;
 
-	double* res = malloc(n * sizeof(double));
+	double* res = calloc(n, sizeof(double));
 
 	for (j = 0; j < n; j++) { /* loop for the generation of upper triangular matrix*/
 		for (i = 0; i < n; i++) {
@@ -200,6 +184,22 @@ void display_array(double* arr, int size)
 	printf("\n");
 }
 
+/*
+   Calculates the analytical theta_exact for the given problem.
+ */
+double* calc_theta_exact(double delta_x, double beta, int N)
+{
+	int i;
+	double* theta_exact = calloc(N, sizeof(double));
+
+	double count;
+
+	for (i = 0, count = 0.0; i < N; i++, count += delta_x)
+		theta_exact[i] = cosh(sqrt(beta) * (1 - count)) / cosh(sqrt(beta));
+
+	return theta_exact;
+}
+
 int main()
 {
 	printf("Enter the value of N = ");
@@ -213,12 +213,12 @@ int main()
 	// Allocating space for the matrix
 	double **mat = create_matrix(N, N);
 	if (mat == NULL)
-		return err_malloc();
+		return err_calloc();
 
-	double* a = malloc((N - 1) * sizeof(double));
-	double* b = malloc((N - 1) * sizeof(double));
-	double* d = malloc(N * sizeof(double));
-	double* r = malloc(N * sizeof(double));
+	double* a = calloc((N - 1), sizeof(double));
+	double* b = calloc((N - 1), sizeof(double));
+	double* d = calloc(N, sizeof(double));
+	double* r = calloc(N, sizeof(double));
 
 	mat = init_matrix(mat, N, delta_x, beta, a, b, d, r);
 
@@ -238,7 +238,19 @@ int main()
 	printf("Results =\n");
 	display_array(res, N);
 
+	int space = sizeof(a) * (N - 1) + sizeof(b) * (N - 1) + sizeof(d) * N
+		    + sizeof(mat) * (N * N) + sizeof(aug) * (N * (N + 1))
+		    + sizeof(res) * N + sizeof(r) * N;
+
+	printf("Space used = %d bytes\n", space);
+
+	double* theta_exact = calc_theta_exact(delta_x, beta, N);
+	printf("Analytical =\n");
+	display_array(theta_exact, N);
+
+	// Freeing all the pointers.
 	free(res);
+	free(theta_exact);
 	free_matrix(mat, N, N);
 	free(a);
 	free(b);
