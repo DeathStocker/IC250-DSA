@@ -20,12 +20,18 @@ typedef struct _tuple {
 	int val;
 } tuple;
 
+/*
+   Prints malloc() error message.
+ */
 int err_malloc()
 {
 	printf("Error allocating memory.\nExitting.\n");
 	return FILE_ERR;
 }
 
+/*
+   Creates a matrix.
+ */
 double** create_matrix(int n, int m)
 {
 	int i;
@@ -43,6 +49,24 @@ double** create_matrix(int n, int m)
 	return arr;
 }
 
+void free_matrix(double** arr, int n, int m)
+{
+	int i;
+
+	(void)m;        // To suppress the warnings.
+
+	if (arr == NULL)
+		printf("Cannot free pointer pointing to NULL.\n");
+
+	for (i = 0; i < n; i++)
+		free(arr[i]);
+
+	free(arr);
+}
+
+/*
+   Creates an Augmented matrix from a matrix and a result vector.
+ */
 double** create_aug_matrix(double** mat, double* arr, int m, int n)
 {
 	double** aug = create_matrix(m, n + 1);
@@ -60,6 +84,9 @@ double** create_aug_matrix(double** mat, double* arr, int m, int n)
 	return aug;
 }
 
+/*
+   Checks if the matrix is tridiagonal or not.
+ */
 int isTriDiagonal(double** arr, int N)
 {
 	int i, j;
@@ -79,6 +106,9 @@ int isTriDiagonal(double** arr, int N)
 	return 0;
 }
 
+/*
+   Initializes the matrix with the given values.
+ */
 double** init_matrix(double** arr, int N, double delta_x, double beta,
 		     double* a, double* b, double* d, double* r)
 {
@@ -113,6 +143,9 @@ double** init_matrix(double** arr, int N, double delta_x, double beta,
 	return arr;
 }
 
+/*
+   Performs Gauss elimination on the given Augmented matrix.
+ */
 double* gauss_eliminate(double** aug, int n)
 {
 	int i, j, k;
@@ -141,6 +174,9 @@ double* gauss_eliminate(double** aug, int n)
 	return res;
 }
 
+/*
+   Prints the matrix.
+ */
 void display_matrix(double** arr, int m, int n)
 {
 	int i, j;
@@ -152,13 +188,15 @@ void display_matrix(double** arr, int m, int n)
 	}
 }
 
+/*
+   Prints the vector.
+ */
 void display_array(double* arr, int size)
 {
 	int i;
 
-	for(i = 0; i < size; i++) {
+	for (i = 0; i < size; i++)
 		printf("%lf\t", arr[i]);
-	}
 	printf("\n");
 }
 
@@ -201,11 +239,12 @@ int main()
 	display_array(res, N);
 
 	free(res);
-	free(mat);
+	free_matrix(mat, N, N);
 	free(a);
 	free(b);
 	free(d);
 	free(r);
+	free_matrix(aug, N, N + 1);
 
 	return 0;
 }
