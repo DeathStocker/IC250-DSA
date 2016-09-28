@@ -1,3 +1,7 @@
+// Name - Utkarsh Kunwar
+// Roll No. - B15338
+// IC-250 Week - 5
+
 #ifndef MECH_ASS
 #define MECH_ASS
 
