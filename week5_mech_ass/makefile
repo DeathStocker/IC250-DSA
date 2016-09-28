@@ -32,6 +32,10 @@ clean: clean-objects
 clean-objects:
 	$(RM) $(RMFLAGS) *.o
 
+# Only removes the data, and the plot images.
+clean-data:
+	$(RM) $(RMFLAGS) *.dat *.png
+
 debug: CFLAGS+=$(DFLAGS)
 debug: LFLAGS+=$(DFLAGS)
 debug: all
