@@ -1,0 +1,35 @@
+#ifndef GRAPH_H
+#define GRAPH_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+#define INFINITE INT_MAX
+#define clear() printf("\033[H\033[J")
+
+// A C Program to demonstrate adjacency list representation of graphs
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// A structure to represent an adjacency list node
+typedef struct _AdjListNode {
+	int dest;
+	double weight;
+	struct _AdjListNode* next;
+} AdjListNode;
+
+// A structure to represent an adjacency list
+typedef struct _AdjList {
+	AdjListNode* head; // pointer to head node of list
+} AdjList;
+
+// A structure to represent a graph. A graph is an array of adjacency lists.
+// Size of array will be V (number of vertices in graph)
+typedef struct _Graph {
+	int V;
+	AdjList* array;
+} Graph;
+
+#endif
