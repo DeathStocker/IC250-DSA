@@ -32,6 +32,7 @@ typedef struct _Graph {
 	int V;
 	int E;
 	AdjList* array;
+	int directed;
 } Graph;
 
 #endif

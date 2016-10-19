@@ -15,12 +15,13 @@ AdjListNode* newAdjListNode(int src, int dest, double weight)
 }
 
 // A utility function that creates a graph of V vertices
-Graph* createGraph(int V, int E)
+Graph* createGraph(int V, int is_directed)
 {
 	Graph* graph = malloc(sizeof(Graph));
 
 	graph->V = V;
-	graph->E = E;
+	graph->E = 0;
+	graph->directed = is_directed;
 
 	// Create an array of adjacency lists.  Size of array will be V
 	graph->array = malloc(V * sizeof(AdjList));
@@ -40,11 +41,19 @@ void addEdge(Graph* graph, int src, int dest, double weight)
 	// list of src.  The node is added at the begining
 	AdjListNode* newNode = newAdjListNode(src, dest, weight);
 
+	graph->E = graph->E + 1;
+
 	newNode->next = graph->array[src].head;
 	graph->array[src].head = newNode;
+
+	if(graph->directed == 1) {
+		newNode = newAdjListNode(dest, src, weight);
+		newNode->next = graph->array[dest].head;
+		graph->array[dest].head = newNode;
+	}
 }
 
-Graph* deleteEdge(Graph* g, int src, int dest)
+void deleteEdge(Graph* g, int src, int dest)
 {
 	AdjListNode* iterator = g->array[src].head;
 	int index = -1, flag = 0;
@@ -61,12 +70,13 @@ Graph* deleteEdge(Graph* g, int src, int dest)
 
 	if (index == -1 || flag == 0) {
 		printf("Edge is not present between [%d] and [%d].\n", src, dest);
-		return g;
+		return;
 	}
-	if(index == 0) {
+	if (index == 0) {
 		g->array[src].head = iterator->next;
+		g->E = g->E - 1;
 		free(iterator);
-		return g;
+		return;
 	}
 	int i;
 	iterator = g->array[src].head;
@@ -75,8 +85,9 @@ Graph* deleteEdge(Graph* g, int src, int dest)
 	AdjListNode* next = iterator->next->next;
 	free(iterator->next);
 	iterator->next = next;
+	g->E = g->E - 1;
 
-	return g;
+	return;
 }
 
 // A utility function to print the adjacency list representation of graph
@@ -126,15 +137,16 @@ int* neighboursVertex(Graph* g, int V)
 
 int readFile(char* filename)
 {
+	clear();
 	FILE* fp = fopen(filename, "r");
 
 	if (fp == NULL) {
 		printf("File cannot be opened.\n");
 		return 1;
 	}
-	int v, e;
-	fscanf(fp, "%d %d", &v, &e);
-	Graph* g = createGraph(v, e);
+	int v, e, is_directed;
+	fscanf(fp, "%d %d %d", &is_directed, &v, &e);
+	Graph* g = createGraph(v, is_directed);
 
 	int i;
 	for (i = 0; i <= e; i++) {
@@ -154,6 +166,7 @@ int readFile(char* filename)
 
 	// Testing
 	printGraph(g);
+	printf("Num edges = %d\n", g->E);
 	double* dist = dijkstra(g, 1);
 	printPath(dist, 3);
 
@@ -165,8 +178,14 @@ int readFile(char* filename)
 		printf("%d ", neigh[i]);
 	printf("\n\n");
 
-	g = deleteEdge(g, 1, 3);
+	deleteEdge(g, 3, 4);
 	printGraph(g);
+
+	addEdge(g, 4, 3, 3);
+	printGraph(g);
+
+	dist = bellmanford(g, 1);
+	printPath(dist, 3);
 
 	return 0;
 }

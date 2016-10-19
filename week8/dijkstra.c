@@ -135,7 +135,7 @@ void printPath(double* dist, int dest)
 	if (dist[dest] != INFINITE)
 		printf("%d \t\t %lf\n", dest, dist[dest]);
 	else
-		printf("%d \t\t INFINITY", dest);
+		printf("%d \t\t INFINITY\n", dest);
 }
 
 // The main function that calulates distances of shortest paths from src to all
