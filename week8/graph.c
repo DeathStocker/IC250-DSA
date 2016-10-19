@@ -1,6 +1,7 @@
 #include "graph.h"
 #include "dijkstra.h"
 #include "bellmanford.h"
+#include "kruskal.c"
 
 // A utility function to create a new adjacency list node
 AdjListNode* newAdjListNode(int src, int dest, double weight)
@@ -157,11 +158,6 @@ int do_DFS(Graph* g, int V)
 	return 0;
 }
 
-int BFS(Graph* g, int V, int* status, GQueue* q)
-{
-
-}
-
 int do_BFS(Graph* g, int V)
 {
 	int* v = malloc(sizeof(int));
@@ -190,6 +186,63 @@ int do_BFS(Graph* g, int V)
 		}
 	}
 	return 0;
+}
+
+void PrimMST(Graph* graph)
+{
+	int V = graph->V;       // Get the number of vertices in graph
+	int parent[V];          // Array to store constructed MST
+	int key[V];             // Key values used to pick minimum weight edge in cut
+
+	// minHeap represents set E
+	MinHeap* minHeap = createMinHeap(V);
+
+	// Initialize min heap with all vertices. Key value of
+	// all vertices (except 0th vertex) is initially infinite
+	int v;
+	for (v = 1; v < V; ++v) {
+		parent[v] = -1;
+		key[v] = INT_MAX;
+		minHeap->array[v] = newMinHeapNode(v, key[v]);
+		minHeap->pos[v] = v;
+	}
+
+	// Make key value of 0th vertex as 0 so that it
+	// is extracted first
+	key[0] = 0;
+	minHeap->array[0] = newMinHeapNode(0, key[0]);
+	minHeap->pos[0]   = 0;
+
+	// Initially size of min heap is equal to V
+	minHeap->size = V;
+
+	// In the followin loop, min heap contains all nodes
+	// not yet added to MST.
+	while (!isEmpty(minHeap)) {
+		// Extract the vertex with minimum key value
+		MinHeapNode* minHeapNode = extractMin(minHeap);
+		int u = minHeapNode->v; // Store the extracted vertex number
+
+		// Traverse through all adjacent vertices of u (the extracted
+		// vertex) and update their key values
+		AdjListNode* pCrawl = graph->array[u].head;
+		while (pCrawl != NULL) {
+			int v = pCrawl->dest;
+
+			// If v is not yet included in MST and weight of u-v is
+			// less than key value of v, then update key value and
+			// parent of v
+			if (isInMinHeap(minHeap, v) && pCrawl->weight < key[v]) {
+				key[v] = pCrawl->weight;
+				parent[v] = u;
+				decreaseKey(minHeap, v, key[v]);
+			}
+			pCrawl = pCrawl->next;
+		}
+	}
+
+	// print edges of MST
+	printArr(parent, V);
 }
 
 int readFile(char* filename)
@@ -258,6 +311,13 @@ int readFile(char* filename)
 	printf("\nBFS-\n");
 	do_BFS(g, 0);
 
+	// Prim MST
+	printf("\nPrim MST - \n");
+	PrimMST(g);
+
+	//Kruskal MST
+	printf("\nKruskal MST - \n");
+	KruskalMST(g);
 	return 0;
 }
 

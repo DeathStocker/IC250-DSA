@@ -142,8 +142,8 @@ void printPath(double* dist, int dest)
 // vertices. It is a O(ELogV) function
 double* dijkstra(Graph* graph, int src)
 {
-	int V = graph->V;       // Get the number of vertices in graph
-	double* dist = malloc(V * sizeof(double));         // dist values used to pick minimum weight edge in cut
+	int V = graph->V;                               // Get the number of vertices in graph
+	double* dist = malloc(V * sizeof(double));      // dist values used to pick minimum weight edge in cut
 
 	// minHeap represents set E
 	MinHeap* minHeap = createMinHeap(V);
@@ -194,4 +194,11 @@ double* dijkstra(Graph* graph, int src)
 
 	// print the calculated shortest distances
 	return dist;
+}
+
+void printArr(int arr[], int n)
+{
+	int i;
+	for (i = 1; i < n; ++i)
+		printf("%d --- %d\n", arr[i], i);
 }
