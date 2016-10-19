@@ -46,7 +46,7 @@ void addEdge(Graph* graph, int src, int dest, double weight)
 	newNode->next = graph->array[src].head;
 	graph->array[src].head = newNode;
 
-	if(graph->directed == 1) {
+	if (graph->directed == 0) {
 		newNode = newAdjListNode(dest, src, weight);
 		newNode->next = graph->array[dest].head;
 		graph->array[dest].head = newNode;
@@ -135,6 +135,28 @@ int* neighboursVertex(Graph* g, int V)
 	return neighbours;
 }
 
+int DFS(Graph* g, int V, int* visited)
+{
+	visited[V] = 1;
+	int num_neighbours = degreeVertex(g, V);
+	int* neighbours = neighboursVertex(g, V);
+
+	printf("[%d] got visited.\n", V);
+	int i;
+	for (i = 0; i < num_neighbours; i++)
+		if (visited[neighbours[i]] == 0)
+			DFS(g, neighbours[i], visited);
+	return 0;
+}
+
+int do_DFS(Graph* g, int V)
+{
+	int* visited = calloc(g->V, sizeof(int));
+
+	DFS(g, V, visited);
+	return 0;
+}
+
 int readFile(char* filename)
 {
 	clear();
@@ -165,27 +187,37 @@ int readFile(char* filename)
 	}
 
 	// Testing
+	//dijkstra
 	printGraph(g);
 	printf("Num edges = %d\n", g->E);
 	double* dist = dijkstra(g, 1);
 	printPath(dist, 3);
 
+	// Degree
 	printf("Degree of [1] = %d\n\n", degreeVertex(g, 1));
 
+	// Neighbours
 	int* neigh = neighboursVertex(g, 1);
 	printf("Neighbours of [1] = ");
 	for (i = 0; i < degreeVertex(g, 1); i++)
 		printf("%d ", neigh[i]);
 	printf("\n\n");
 
+	// Deleting Edge.
 	deleteEdge(g, 3, 4);
 	printGraph(g);
 
+	// Adding Edge.
 	addEdge(g, 4, 3, 3);
 	printGraph(g);
 
+	// Bellmanford
 	dist = bellmanford(g, 1);
 	printPath(dist, 3);
+
+	// DFS
+	printf("\nDFS-\n");
+	do_DFS(g, 0);
 
 	return 0;
 }
