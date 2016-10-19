@@ -26,7 +26,7 @@ int isEmpty(MinHeap* minHeap);
 MinHeapNode* extractMin(MinHeap* minHeap);
 void decreaseKey(MinHeap* minHeap, int v, int dist);
 bool isInMinHeap(MinHeap *minHeap, int v);
-void printArr(double dist[], int n);
-void dijkstra(Graph* graph, int src, int dest);
+void printPath(double* dist, int dest);
+double* dijkstra(Graph* graph, int src);
 
 #endif

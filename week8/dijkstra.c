@@ -129,7 +129,7 @@ bool isInMinHeap(MinHeap *minHeap, int v)
 }
 
 // A utility function used to print the solution
-void printArr(double dist[], int dest)
+void printPath(double* dist, int dest)
 {
 	printf("Vertex   Distance from Source\n");
 	if (dist[dest] != INFINITE)
@@ -140,10 +140,10 @@ void printArr(double dist[], int dest)
 
 // The main function that calulates distances of shortest paths from src to all
 // vertices. It is a O(ELogV) function
-void dijkstra(Graph* graph, int src, int dest)
+double* dijkstra(Graph* graph, int src)
 {
 	int V = graph->V;       // Get the number of vertices in graph
-	double dist[V];         // dist values used to pick minimum weight edge in cut
+	double* dist = malloc(V * sizeof(double));         // dist values used to pick minimum weight edge in cut
 
 	// minHeap represents set E
 	MinHeap* minHeap = createMinHeap(V);
@@ -193,5 +193,5 @@ void dijkstra(Graph* graph, int src, int dest)
 	}
 
 	// print the calculated shortest distances
-	printArr(dist, dest);
+	return dist;
 }

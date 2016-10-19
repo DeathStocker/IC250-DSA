@@ -15,6 +15,7 @@
 
 // A structure to represent an adjacency list node
 typedef struct _AdjListNode {
+	int src;
 	int dest;
 	double weight;
 	struct _AdjListNode* next;
@@ -29,6 +30,7 @@ typedef struct _AdjList {
 // Size of array will be V (number of vertices in graph)
 typedef struct _Graph {
 	int V;
+	int E;
 	AdjList* array;
 } Graph;
 
