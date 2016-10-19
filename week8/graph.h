@@ -4,14 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <glib.h>
 
 #define INFINITE INT_MAX
 #define clear() printf("\033[H\033[J")
-
-// A C Program to demonstrate adjacency list representation of graphs
-
-#include <stdio.h>
-#include <stdlib.h>
 
 // A structure to represent an adjacency list node
 typedef struct _AdjListNode {

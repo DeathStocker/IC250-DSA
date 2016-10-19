@@ -157,6 +157,41 @@ int do_DFS(Graph* g, int V)
 	return 0;
 }
 
+int BFS(Graph* g, int V, int* status, GQueue* q)
+{
+
+}
+
+int do_BFS(Graph* g, int V)
+{
+	int* v = malloc(sizeof(int));
+
+	*v = V;
+	int* status = calloc(V, sizeof(int));
+
+	GQueue* q = g_queue_new();
+	g_queue_push_tail(q, v);
+
+	status[*v] = 1;
+
+	while (!(g_queue_is_empty(q))) {
+		int v = *(int*)(g_queue_pop_head(q));
+		printf("[%d] got visited.\n", v);
+		status[v] = 2;
+		int num_neighbours = degreeVertex(g, v);
+		int* neighbours = neighboursVertex(g, v);
+
+		int i;
+		for (i = 0; i < num_neighbours; i++) {
+			if (status[neighbours[i]] == 0) {
+				g_queue_push_tail(q, &neighbours[i]);
+				status[neighbours[i]] = 1;
+			}
+		}
+	}
+	return 0;
+}
+
 int readFile(char* filename)
 {
 	clear();
@@ -218,6 +253,10 @@ int readFile(char* filename)
 	// DFS
 	printf("\nDFS-\n");
 	do_DFS(g, 0);
+
+	//BFS
+	printf("\nBFS-\n");
+	do_BFS(g, 0);
 
 	return 0;
 }
