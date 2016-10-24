@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <glib.h>
+#include <stdbool.h>
 
 #define INFINITE INT_MAX
 #define clear() printf("\033[H\033[J")
@@ -28,6 +29,20 @@ typedef struct _DoubleEdge {
 
 	double weight;
 } DoubleEdge;
+
+// Structure to represent a min heap node
+typedef struct _MinHeapNode {
+	int v;
+	int dist;
+} MinHeapNode;
+
+// Structure to represent a min heap
+typedef struct _MinHeap {
+	int size;       // Number of heap nodes present currently
+	int capacity;   // Capacity of min heap
+	int *pos;       // This is needed for decreaseKey()
+	MinHeapNode **array;
+} MinHeap;
 
 // A structure to represent an adjacency list
 typedef struct _AdjList {
@@ -57,5 +72,16 @@ int MinDistance(double* distances, gboolean* processed, int size);
 Graph* primMST(Graph* graph, int source, int is_directed);
 gint EdgeCompareFunction(gconstpointer a, gconstpointer b);
 Graph* KruskalMST(Graph* graph, int source, int is_directed);
+MinHeapNode* newMinHeapNode(int v, int dist);
+MinHeap* createMinHeap(int capacity);
+void swapMinHeapNode(MinHeapNode** a, MinHeapNode** b);
+void minHeapify(MinHeap* minHeap, int idx);
+int isEmpty(MinHeap* minHeap);
+MinHeapNode* extractMin(MinHeap* minHeap);
+void decreaseKey(MinHeap* minHeap, int v, int dist);
+bool isInMinHeap(MinHeap *minHeap, int v);
+void printPath(double* dist, int dest);
+double* dijkstra(Graph* graph, int src);
+double* bellmanford(Graph* graph, int src);
 
 #endif

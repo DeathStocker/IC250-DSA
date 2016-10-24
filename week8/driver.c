@@ -1,9 +1,5 @@
 #include "graph.h"
 
-
-#include "dijkstra.h"
-#include "bellmanford.h"
-
 int readFile(char* filename)
 {
 	clear();
