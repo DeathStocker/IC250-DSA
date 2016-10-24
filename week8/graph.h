@@ -17,6 +17,18 @@ typedef struct _AdjListNode {
 	struct _AdjListNode* next;
 } AdjListNode;
 
+typedef struct _Edge {
+	int dest;
+	double weight;
+} Edge;
+
+typedef struct _DoubleEdge {
+	int source;
+	int dest;
+
+	double weight;
+} DoubleEdge;
+
 // A structure to represent an adjacency list
 typedef struct _AdjList {
 	AdjListNode* head; // pointer to head node of list
