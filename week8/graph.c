@@ -193,6 +193,7 @@ int MinDistance(double* distances, gboolean* processed, int size)
 	int minPosition;
 
 	int i;
+
 	for (i = 0; i < size; i++) {
 		if (!processed[i] && distances[i] < min) {
 			min = distances[i];
@@ -212,6 +213,7 @@ Graph* primMST(Graph* graph, int source, int is_directed)
 	int* prev = malloc(numberOfNodes * sizeof(*prev));
 	gboolean* processed = malloc(numberOfNodes * sizeof(*processed));
 	int i;
+
 	for (i = 0; i < numberOfNodes; i++) {
 		distances[i] = INFINITE;
 		processed[i] = FALSE;
@@ -224,7 +226,7 @@ Graph* primMST(Graph* graph, int source, int is_directed)
 		processed[minVertex] = TRUE;
 
 		AdjListNode* edgesIt = adjacency[minVertex].head;
-		while(edgesIt != NULL) {
+		while (edgesIt != NULL) {
 			AdjListNode* e = edgesIt;
 			if (!processed[e->dest] && distances[e->dest] > e->weight) {
 				distances[e->dest] = e->weight;
@@ -236,10 +238,60 @@ Graph* primMST(Graph* graph, int source, int is_directed)
 	}
 
 	Graph* mst = createGraph(graph->V, is_directed);
-	for (i = 0; i < graph->V; i++) {
-		if (i != prev[i]) {
+	for (i = 0; i < graph->V; i++)
+		if (i != prev[i])
 			addEdge(mst, prev[i], i, distances[i]);
+
+	return mst;
+}
+
+gint EdgeCompareFunction(gconstpointer a, gconstpointer b)
+{
+	DoubleEdge* aEdge = (DoubleEdge*)a;
+	DoubleEdge* bEdge = (DoubleEdge*)b;
+
+	return aEdge->weight > bEdge->weight;
+}
+
+Graph* KruskalMST(Graph* graph, int source, int is_directed)
+{
+	GSList* edges = NULL;
+	int i;
+	AdjListNode* edgesIt = NULL;
+
+	for (i = 0; i < graph->V; i++) {
+		edgesIt = graph->array[i].head;
+		while (edgesIt != NULL) {
+			AdjListNode* e = edgesIt;
+
+			DoubleEdge* de = malloc(sizeof(*de));
+			de->source = i;
+			de->dest = e->dest;
+			de->weight = e->weight;
+
+			edges = g_slist_prepend(edges, de);
+
+			edgesIt = edgesIt->next;
 		}
+	}
+
+	edges = g_slist_sort(edges, &EdgeCompareFunction);
+
+	Graph* mst = createGraph(graph->V, is_directed);
+	int* sets = malloc(graph->V * sizeof(*sets));
+	for (i = 0; i < graph->V; i++)
+		sets[i] = i;
+
+	int chosen = 0;
+	while (edges != NULL && chosen < graph->V - 1) {
+		DoubleEdge* e = (DoubleEdge*)edges->data;
+		if (sets[e->source] != sets[e->dest]) {
+			addEdge(mst, e->source, e->dest, e->weight);
+			sets[e->dest] = sets[e->source];
+			chosen++;
+		}
+
+		edges = g_slist_next(edges);
 	}
 
 	return mst;
@@ -316,9 +368,11 @@ int readFile(char* filename)
 	Graph* prim_MST = primMST(g, 0, is_directed);
 	printGraph(prim_MST);
 
-	// //Kruskal MST
-	// printf("\nKruskal MST - \n");
-	// KruskalMST(g);
+	//Kruskal MST
+	printf("\nKruskal MST - \n");
+	Graph* kruskal_MST = KruskalMST(g, 0, is_directed);
+	printGraph(kruskal_MST);
+
 	return 0;
 }
 
