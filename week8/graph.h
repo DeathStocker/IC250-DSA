@@ -43,4 +43,19 @@ typedef struct _Graph {
 	int directed;
 } Graph;
 
+AdjListNode* newAdjListNode(int src, int dest, double weight);
+Graph* createGraph(int V, int is_directed);
+void addEdge(Graph* graph, int src, int dest, double weight);
+void deleteEdge(Graph* g, int src, int dest);
+void printGraph(Graph* graph);
+int degreeVertex(Graph* g, int V);
+int* neighboursVertex(Graph* g, int V);
+int DFS(Graph* g, int V, int* visited);
+int do_DFS(Graph* g, int V);
+int do_BFS(Graph* g, int V);
+int MinDistance(double* distances, gboolean* processed, int size);
+Graph* primMST(Graph* graph, int source, int is_directed);
+gint EdgeCompareFunction(gconstpointer a, gconstpointer b);
+Graph* KruskalMST(Graph* graph, int source, int is_directed);
+
 #endif
