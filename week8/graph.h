@@ -322,11 +322,14 @@ bool isInMinHeap(MinHeap *minHeap, int v)
 // A utility function used to print the solution
 void printPath(double* dist, int dest)
 {
-	printf("Vertex   Distance from Source\n");
-	if (dist[dest] != INFINITE)
-		printf("%d \t\t %lf\n", dest, dist[dest]);
-	else
-		printf("%d \t\t INFINITY\n", dest);
+	if (dist != NULL) {
+		printf("Vertex   Distance from Source\n");
+		if (dist[dest] != INFINITE)
+			printf("%d \t\t %lf\n", dest, dist[dest]);
+		else
+			printf("%d \t\t INFINITY\n", dest);
+	} else
+		printf("ERROR! The distance array = NULL\n");
 }
 
 // The main function that calulates distances of shortest paths from src to all
@@ -390,8 +393,20 @@ double* dijkstra(Graph* graph, int src)
 void printArr(int arr[], int n)
 {
 	int i;
+
 	for (i = 1; i < n; ++i)
 		printf("%d --- %d\n", arr[i], i);
+}
+
+void printList(GSList* list)
+{
+	GSList* iterator = list;
+
+	while (iterator) {
+		printf("%d -> ", *(int*)(iterator->data));
+		iterator = iterator->next;
+	}
+	printf("NULL\n");
 }
 
 double* bellmanford(Graph* graph, int src)
@@ -433,6 +448,7 @@ double* bellmanford(Graph* graph, int src)
 
 			if (dist[u] != INFINITE && dist[u] + weight < dist[v]) {
 				printf("Graph contains negative weight cycle.\n");
+				return NULL;
 				break;
 			}
 		}
@@ -440,29 +456,7 @@ double* bellmanford(Graph* graph, int src)
 	return dist;
 }
 
-int DFS(Graph* g, int V, int* visited)
-{
-	visited[V] = 1;
-	int num_neighbours = degreeVertex(g, V);
-	int* neighbours = neighboursVertex(g, V);
-
-	printf("[%d] got visited.\n", V);
-	int i;
-	for (i = 0; i < num_neighbours; i++)
-		if (visited[neighbours[i]] == 0)
-			DFS(g, neighbours[i], visited);
-	return 0;
-}
-
-int do_DFS(Graph* g, int V)
-{
-	int* visited = calloc(g->V, sizeof(int));
-
-	DFS(g, V, visited);
-	return 0;
-}
-
-int do_BFS(Graph* g, int V)
+GSList* do_DFS(Graph* g, int V)
 {
 	int* v = malloc(sizeof(int));
 
@@ -473,13 +467,15 @@ int do_BFS(Graph* g, int V)
 	g_queue_push_tail(q, v);
 
 	status[*v] = 1;
+	GSList* dfs = NULL;
 
 	while (!(g_queue_is_empty(q))) {
-		int v = *(int*)(g_queue_pop_head(q));
-		printf("[%d] got visited.\n", v);
-		status[v] = 2;
-		int num_neighbours = degreeVertex(g, v);
-		int* neighbours = neighboursVertex(g, v);
+		int* v = (int*)(g_queue_pop_tail(q));
+		dfs = g_slist_prepend(dfs, v);
+		printf("[%d] got visited.\n", *v);
+		status[*v] = 2;
+		int num_neighbours = degreeVertex(g, *v);
+		int* neighbours = neighboursVertex(g, *v);
 
 		int i;
 		for (i = 0; i < num_neighbours; i++) {
@@ -489,7 +485,43 @@ int do_BFS(Graph* g, int V)
 			}
 		}
 	}
-	return 0;
+
+	dfs = g_slist_reverse(dfs);
+	return dfs;
+}
+
+GSList* do_BFS(Graph* g, int V)
+{
+	int* v = malloc(sizeof(int));
+
+	*v = V;
+	int* status = calloc(V, sizeof(int));
+
+	GQueue* q = g_queue_new();
+	g_queue_push_tail(q, v);
+
+	status[*v] = 1;
+	GSList* bfs = NULL;
+
+	while (!(g_queue_is_empty(q))) {
+		int* v = (int*)(g_queue_pop_head(q));
+		bfs = g_slist_prepend(bfs, v);
+		printf("[%d] got visited.\n", *v);
+		status[*v] = 2;
+		int num_neighbours = degreeVertex(g, *v);
+		int* neighbours = neighboursVertex(g, *v);
+
+		int i;
+		for (i = 0; i < num_neighbours; i++) {
+			if (status[neighbours[i]] == 0) {
+				g_queue_push_tail(q, &neighbours[i]);
+				status[neighbours[i]] = 1;
+			}
+		}
+	}
+
+	bfs = g_slist_reverse(bfs);
+	return bfs;
 }
 
 int MinDistance(double* distances, gboolean* processed, int size)
