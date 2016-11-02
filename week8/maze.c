@@ -6,20 +6,16 @@ Graph* generateMaze(int n)
 	Graph* graph = createGraph(n * n, 0);
 	int i, j, random;
 
-	srand(time(NULL));
 	for (i = 0; i < n - 1; i++) {
 		for (j = 0; j < n; j++) {
 			if (j < n - 1) {
-				random = rand() % 100;
-				srand(random);
+				random = rand() % 10;
 				int current_node = i * n + j;
 				addEdge(graph, current_node, current_node + 1, random);
-				random = rand() % 100;
-				srand(random);
+				random = rand() % 10;
 				addEdge(graph, current_node, current_node + n, random);
 			} else {
-				random = rand() % 100;
-				srand(random);
+				random = rand() % 10;
 				int current_node = i * n + j;
 				addEdge(graph, current_node, current_node + n, random);
 			}
@@ -27,8 +23,7 @@ Graph* generateMaze(int n)
 	}
 
 	for (i = 0; i < n - 1; i++) {
-		random = rand() % 100;
-		srand(random);
+		random = rand() % 10;
 		int current_node = (n - 1) * n + i;
 		addEdge(graph, current_node, current_node + 1, random);
 	}
@@ -38,19 +33,15 @@ Graph* generateMaze(int n)
 
 int getRandSrc(int n)
 {
-	srand(time(NULL));
 	return rand() % (n * n);
 }
 
 int getRandDest(int n, int src)
 {
-	srand(time(NULL));
 	int dest = src;
-	while (dest == src) {
-		int random = rand();
-		srand(random);
-		dest = random % (n * n);
-	}
+
+	while (dest == src)
+		dest = rand() % (n * n);
 
 	return dest;
 }
@@ -71,11 +62,13 @@ void printMazePath(int* predecessor, int src, int dest)
 	list = g_slist_prepend(list, v);
 
 	GSList* iter = list;
+	printf("%d", *(int*)(iter->data));
+	iter = iter->next;
 	while (iter) {
-		printf("%d->", *(int*)(iter->data));
+		printf("->%d", *(int*)(iter->data));
 		iter = iter->next;
 	}
-	printf("STOP.\n");
+	printf("\n");
 }
 
 int** matrixifyAdjList(Graph* g)
@@ -119,6 +112,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	clear();
+	srand(time(NULL));
 	int num = atoi(argv[1]);
 
 	Graph* g = generateMaze(num);
