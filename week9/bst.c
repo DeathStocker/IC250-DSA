@@ -220,6 +220,13 @@ int isBST(node* root)
 	return isBSTUtil(root, INT_MIN, INT_MAX);
 }
 
+int totalNodes(node* root)
+{
+	GList* in = NULL;
+	inorder(root, &in);
+	return g_list_length(in);
+}
+
 int main()
 {
 	node *root;
@@ -260,6 +267,8 @@ int main()
 		printf("\nLCA of [17] and [2] = %d\n", lca->data);
 
 	printf("\nTree is %s BST\n", (isBST(root)) ? "a" : "NOT a");
+
+	printf("\nTotal Nodes = %d\n", totalNodes(root));
 
 	freeTree(root);
 }
