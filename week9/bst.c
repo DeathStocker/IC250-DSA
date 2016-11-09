@@ -223,8 +223,46 @@ int isBST(node* root)
 int totalNodes(node* root)
 {
 	GList* in = NULL;
+
 	inorder(root, &in);
 	return g_list_length(in);
+}
+
+GList* findInList(GList* list, int val)
+{
+	GList* iter = list;
+	while(iter) {
+		if(*(int*)(iter->data) == val)
+			break;
+		iter = iter->next;
+	}
+	return iter;
+}
+
+GList* inSuccessor(node* root, int data)
+{
+	GList* in = NULL;
+
+	inorder(root, &in);
+
+	GList* Node = findInList(in, data);
+
+	if(Node == NULL)
+		return NULL;
+	return Node->next;
+}
+
+GList* inPredecessor(node* root, int data)
+{
+	GList* in = NULL;
+
+	inorder(root, &in);
+
+	GList* Node = findInList(in, data);
+
+	if(Node == NULL)
+		return NULL;
+	return Node->prev;
 }
 
 int main()
@@ -269,6 +307,14 @@ int main()
 	printf("\nTree is %s BST\n", (isBST(root)) ? "a" : "NOT a");
 
 	printf("\nTotal Nodes = %d\n", totalNodes(root));
+
+	GList* insucc = inSuccessor(root, 50);
+	printf("Inorder Successor of %d = ", 50);
+	(insucc == NULL) ? printf("NONE.\n") : printf("%d\n",*(int*)(insucc->data));
+
+	GList* inpre = inPredecessor(root, 50);
+	printf("Inorder Successor of %d = ", 50);
+	(insucc == NULL) ? printf("NONE.\n") : printf("%d\n",*(int*)(inpre->data));
 
 	freeTree(root);
 }
