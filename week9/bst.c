@@ -172,23 +172,6 @@ int depth(node* root)
 	}
 }
 
-node* findLeastCommonAncestor(node* root, int n1, int n2)
-{
-	// Base case
-	if (root == NULL)
-		return NULL;
-
-	if (root->data == n1 || root->data == n2)
-		return root;
-
-	node *left_lca  = findLeastCommonAncestor(root->left, n1, n2);
-	node *right_lca = findLeastCommonAncestor(root->right, n1, n2);
-
-	if (left_lca && right_lca) return root;
-
-	return (left_lca != NULL) ? left_lca : right_lca;
-}
-
 int isBSTUtil(node* root, int min, int max)
 {
 	if (root == NULL)
@@ -218,8 +201,9 @@ int totalNodes(node* root)
 GList* findInList(GList* list, int val)
 {
 	GList* iter = list;
-	while(iter) {
-		if(*(int*)(iter->data) == val)
+
+	while (iter) {
+		if (*(int*)(iter->data) == val)
 			break;
 		iter = iter->next;
 	}
@@ -234,7 +218,7 @@ GList* inSuccessor(node* root, int data)
 
 	GList* Node = findInList(in, data);
 
-	if(Node == NULL)
+	if (Node == NULL)
 		return NULL;
 	return Node->next;
 }
@@ -247,7 +231,7 @@ GList* inPredecessor(node* root, int data)
 
 	GList* Node = findInList(in, data);
 
-	if(Node == NULL)
+	if (Node == NULL)
 		return NULL;
 	return Node->prev;
 }
@@ -260,15 +244,16 @@ int Abs(int val)
 int closestNode(node* root, int val)
 {
 	GList* in = NULL;
+
 	inorder(root, &in);
 
 	GList* iter = in;
 
 	int min = INT_MAX;
 	int closest = INT_MIN;
-	while(iter){
+	while (iter) {
 		int diff = Abs(val - *(int*)(iter->data));
-		if(diff < min) {
+		if (diff < min) {
 			min = diff;
 			closest = *(int*)(iter->data);
 		}
@@ -278,19 +263,45 @@ int closestNode(node* root, int val)
 	return closest;
 }
 
+node* lca(node* root, int n1, int n2)
+{
+	if (root == NULL) return NULL;
+
+	if (root->data > n1 && root->data > n2)
+		return lca(root->left, n1, n2);
+
+	if (root->data < n1 && root->data < n2)
+		return lca(root->right, n1, n2);
+
+	return root;
+}
+
+node* findLCA(node* root, int n1, int n2)
+{
+	GList* in = NULL;
+	inorder(root, &in);
+	if(findInList(in, n1) == NULL || findInList(in, n2) == NULL)
+		return NULL;
+	node* LCA = lca(root, n1, n2);
+
+	return LCA;
+}
+
 int main()
 {
 	node *root;
 
 	root = newBinaryTree();
 	/* Inserting nodes into tree */
-	root = insertNode(root, 50);
 	root = insertNode(root, 30);
 	root = insertNode(root, 20);
+	root = insertNode(root, 50);
 	root = insertNode(root, 40);
 	root = insertNode(root, 70);
 	root = insertNode(root, 60);
 	root = insertNode(root, 80);
+	root = insertNode(root, 10);
+	root = insertNode(root, 90);
 
 	GList* in = NULL;
 	printf("\nIn Order Display\n");
@@ -309,11 +320,11 @@ int main()
 
 	printf("\nDepth = %d\n", depth(root));
 
-	node* lca = findLeastCommonAncestor(root, 20, 80);
+	node* lca = findLCA(root, 60, 10);
 	if (lca == NULL)
-		printf("\nLCA of [17] and [2] = NONE\n");
+		printf("\nLCA of [60] and [10] = NONE\n");
 	else
-		printf("\nLCA of [17] and [2] = %d\n", lca->data);
+		printf("\nLCA of [60] and [10] = %d\n", lca->data);
 
 	printf("\nTree is %s BST\n", (isBST(root)) ? "a" : "NOT a");
 
@@ -321,13 +332,13 @@ int main()
 
 	GList* insucc = inSuccessor(root, 50);
 	printf("Inorder Successor of %d = ", 50);
-	(insucc == NULL) ? printf("NONE.\n") : printf("%d\n",*(int*)(insucc->data));
+	(insucc == NULL) ? printf("NONE.\n") : printf("%d\n", *(int*)(insucc->data));
 
 	GList* inpre = inPredecessor(root, 50);
 	printf("Inorder Successor of %d = ", 50);
-	(insucc == NULL) ? printf("NONE.\n") : printf("%d\n",*(int*)(inpre->data));
+	(insucc == NULL) ? printf("NONE.\n") : printf("%d\n", *(int*)(inpre->data));
 
-	printf("Closest to [%d] = %d\n", 42, closestNode(root, 41));
+	printf("Closest to [%d] = %d\n", 18, closestNode(root, 18));
 
 	freeTree(root);
 }
