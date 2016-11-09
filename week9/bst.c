@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <glib.h>
 #include <stdio.h>
+#include <ctype.h>
 
 typedef struct bin_tree {
 	int data;
@@ -251,6 +252,32 @@ GList* inPredecessor(node* root, int data)
 	return Node->prev;
 }
 
+int Abs(int val)
+{
+	return (val < 0) ? -val : val;
+}
+
+int closestNode(node* root, int val)
+{
+	GList* in = NULL;
+	inorder(root, &in);
+
+	GList* iter = in;
+
+	int min = INT_MAX;
+	int closest = INT_MIN;
+	while(iter){
+		int diff = Abs(val - *(int*)(iter->data));
+		if(diff < min) {
+			min = diff;
+			closest = *(int*)(iter->data);
+		}
+		iter = iter->next;
+	}
+
+	return closest;
+}
+
 int main()
 {
 	node *root;
@@ -299,6 +326,8 @@ int main()
 	GList* inpre = inPredecessor(root, 50);
 	printf("Inorder Successor of %d = ", 50);
 	(insucc == NULL) ? printf("NONE.\n") : printf("%d\n",*(int*)(inpre->data));
+
+	printf("Closest to [%d] = %d\n", 42, closestNode(root, 41));
 
 	freeTree(root);
 }
