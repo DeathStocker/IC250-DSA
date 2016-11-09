@@ -177,42 +177,28 @@ node* findLeastCommonAncestor(node* root, int n1, int n2)
 	if (root == NULL)
 		return NULL;
 
-	// If either n1 or n2 matches with root's data, report
-	// the presence by returning root (Note that if a data is
-	// ancestor of other, then the ancestor data becomes LCA
 	if (root->data == n1 || root->data == n2)
 		return root;
 
-	// Look for keys in left and right subtrees
 	node *left_lca  = findLeastCommonAncestor(root->left, n1, n2);
 	node *right_lca = findLeastCommonAncestor(root->right, n1, n2);
 
-	// If both of the above calls return Non-NULL, then one data
-	// is present in once subtree and other is present in other,
-	// So this node is the LCA
 	if (left_lca && right_lca) return root;
 
-	// Otherwise check if left subtree or right subtree is LCA
 	return (left_lca != NULL) ? left_lca : right_lca;
 }
 
-/* Returns true if the given tree is a BST and its
-   values are >= min and <= max. */
 int isBSTUtil(node* root, int min, int max)
 {
-	/* an empty tree is BST */
 	if (root == NULL)
 		return 1;
 
-	/* false if this node violates the min/max constraint */
 	if (root->data < min || root->data > max)
 		return 0;
 
-	/* otherwise check the subtrees recursively,
-	   tightening the min or max constraint */
 	return
-		isBSTUtil(root->left, min, root->data - 1) &&   // Allow only distinct values
-		isBSTUtil(root->right, root->data + 1, max);    // Allow only distinct values
+		isBSTUtil(root->left, min, root->data - 1) &&
+		isBSTUtil(root->right, root->data + 1, max);
 }
 
 int isBST(node* root)
@@ -269,8 +255,6 @@ int main()
 {
 	node *root;
 
-	//int i;
-
 	root = newBinaryTree();
 	/* Inserting nodes into tree */
 	root = insertNode(root, 50);
@@ -281,10 +265,6 @@ int main()
 	root = insertNode(root, 60);
 	root = insertNode(root, 80);
 
-	/* Printing nodes of tree */
-	// printf("Pre Order Display\n");
-	// print_preorder(root);
-
 	GList* in = NULL;
 	printf("\nIn Order Display\n");
 	inorder(root, &in);
@@ -292,8 +272,12 @@ int main()
 
 	root = deleteNode(root, 40);
 
-	printf("\nIn Order Display\n");
-	inorder(root, &in);
+	printf("\nPre Order Display\n");
+	preorder(root, &in);
+	displayList(in);
+
+	printf("\nPost Order Display\n");
+	postorder(root, &in);
 	displayList(in);
 
 	printf("\nDepth = %d\n", depth(root));
