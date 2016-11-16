@@ -279,12 +279,75 @@ node* lca(node* root, int n1, int n2)
 node* findLCA(node* root, int n1, int n2)
 {
 	GList* in = NULL;
+
 	inorder(root, &in);
-	if(findInList(in, n1) == NULL || findInList(in, n2) == NULL)
+	if (findInList(in, n1) == NULL || findInList(in, n2) == NULL)
 		return NULL;
 	node* LCA = lca(root, n1, n2);
 
 	return LCA;
+}
+
+int searchInInorder(int* arr, int x, int n)
+{
+	int i;
+
+	for (i = 0; i < n; i++)
+		if (arr[i] == x)
+			return i;
+	return -1;
+}
+
+void preToPostOrder(GList** list, int* in, int* pre, int n)
+{
+	// The first element in pre[] is always root, search it
+	int root = searchInInorder(in, pre[0], n);
+
+	// If left subtree is not empty, print left subtree
+	if (root != 0)
+		preToPostOrder(list, in, pre + 1, root);
+
+	// If right subtree is not empty, print right subtree
+	if (root != n - 1)
+		preToPostOrder(list, in + root + 1, pre + root + 1, n - root - 1);
+
+	int* val = malloc(sizeof(int));
+	*val = pre[0];
+	*list = g_list_append(*list, val);
+}
+
+int* listToArray(GList* list, int len)
+{
+	int* arr = malloc(len * sizeof(int));
+
+	int i;
+
+	for (i = 0; i < len; i++, list = list->next)
+		arr[i] = *(int*)(list->data);
+
+	return arr;
+}
+
+int cmpFunc(const void* a, const void* b)
+{
+	return *(int*)(a) - *(int*)(b);
+}
+
+void preToPost(node* root, GList** list)
+{
+	(void)root;
+
+	int length = g_list_length(*list);
+	int* pre = listToArray(*list, length);
+
+	*list = g_list_sort(*list, cmpFunc);
+	int* in = listToArray(*list, length);
+
+	GList* post = NULL;
+
+	preToPostOrder(&post, in, pre, length);
+
+	*list = post;
 }
 
 int main()
@@ -339,6 +402,14 @@ int main()
 	(insucc == NULL) ? printf("NONE.\n") : printf("%d\n", *(int*)(inpre->data));
 
 	printf("Closest to [%d] = %d\n", 18, closestNode(root, 18));
+
+	printf("\n=======================\n\nPre Order Display\n");
+	preorder(root, &in);
+	displayList(in);
+
+	printf("\nPost Order from Pre Order = \n");
+	preToPost(root, &in);
+	displayList(in);
 
 	freeTree(root);
 }
