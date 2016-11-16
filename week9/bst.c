@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
+// Compile with gcc bst.c -o bst `pkg-config --cflags --libs glib-2.0`
+
 typedef struct bin_tree {
 	int data;
 	struct bin_tree * right, * left;
@@ -288,72 +290,26 @@ node* findLCA(node* root, int n1, int n2)
 	return LCA;
 }
 
-int searchInInorder(int* arr, int x, int n)
+GList* preToPost(GList** list)
 {
-	int i;
+	GList* iter;
+	node* root = newBinaryTree();
 
-	for (i = 0; i < n; i++)
-		if (arr[i] == x)
-			return i;
-	return -1;
-}
+	for (iter = *list; iter; iter = iter->next)
+		root = insertNode(root, *(int*)(iter->data));
 
-void preToPostOrder(GList** list, int* in, int* pre, int n)
-{
-	// The first element in pre[] is always root, search it
-	int root = searchInInorder(in, pre[0], n);
+	GList* in = NULL;
 
-	// If left subtree is not empty, print left subtree
-	if (root != 0)
-		preToPostOrder(list, in, pre + 1, root);
+	postorder(root, &in);
 
-	// If right subtree is not empty, print right subtree
-	if (root != n - 1)
-		preToPostOrder(list, in + root + 1, pre + root + 1, n - root - 1);
-
-	int* val = malloc(sizeof(int));
-	*val = pre[0];
-	*list = g_list_append(*list, val);
-}
-
-int* listToArray(GList* list, int len)
-{
-	int* arr = malloc(len * sizeof(int));
-
-	int i;
-
-	for (i = 0; i < len; i++, list = list->next)
-		arr[i] = *(int*)(list->data);
-
-	return arr;
-}
-
-int cmpFunc(const void* a, const void* b)
-{
-	return *(int*)(a) - *(int*)(b);
-}
-
-void preToPost(node* root, GList** list)
-{
-	(void)root;
-
-	int length = g_list_length(*list);
-	int* pre = listToArray(*list, length);
-
-	*list = g_list_sort(*list, cmpFunc);
-	int* in = listToArray(*list, length);
-
-	GList* post = NULL;
-
-	preToPostOrder(&post, in, pre, length);
-
-	*list = post;
+	return in;
 }
 
 int main()
 {
 	node *root;
 
+	// Question 1
 	root = newBinaryTree();
 	/* Inserting nodes into tree */
 	root = insertNode(root, 30);
@@ -366,6 +322,7 @@ int main()
 	root = insertNode(root, 10);
 	root = insertNode(root, 90);
 
+	// Question 2
 	GList* in = NULL;
 	printf("\nIn Order Display\n");
 	inorder(root, &in);
@@ -383,12 +340,14 @@ int main()
 
 	printf("\nDepth = %d\n", depth(root));
 
+	// Question 3
 	node* lca = findLCA(root, 60, 10);
 	if (lca == NULL)
 		printf("\nLCA of [60] and [10] = NONE\n");
 	else
 		printf("\nLCA of [60] and [10] = %d\n", lca->data);
 
+	// Question 4
 	printf("\nTree is %s BST\n", (isBST(root)) ? "a" : "NOT a");
 
 	printf("\nTotal Nodes = %d\n", totalNodes(root));
@@ -401,15 +360,17 @@ int main()
 	printf("Inorder Successor of %d = ", 50);
 	(insucc == NULL) ? printf("NONE.\n") : printf("%d\n", *(int*)(inpre->data));
 
+	// Question 5
 	printf("Closest to [%d] = %d\n", 18, closestNode(root, 18));
 
+	// Question 6
 	printf("\n=======================\n\nPre Order Display\n");
 	preorder(root, &in);
 	displayList(in);
 
 	printf("\nPost Order from Pre Order = \n");
-	preToPost(root, &in);
-	displayList(in);
+	GList* post = preToPost(&in);
+	displayList(post);
 
 	freeTree(root);
 }
