@@ -58,6 +58,11 @@ typedef struct _Graph {
 	int directed;
 } Graph;
 
+typedef struct _dijk {
+	double* dist;
+	int* predecessor;
+} dijk;
+
 // A utility function to create a new adjacency list node
 AdjListNode* newAdjListNode(int src, int dest, double weight)
 {
@@ -124,10 +129,8 @@ void deleteEdge(Graph* g, int src, int dest)
 		iterator = iterator->next;
 	}
 
-	if (index == -1 || flag == 0) {
-		printf("Edge is not present between [%d] and [%d].\n", src, dest);
+	if (index == -1 || flag == 0)
 		return;
-	}
 	if (index == 0) {
 		g->array[src].head = iterator->next;
 		g->E = g->E - 1;
@@ -334,11 +337,11 @@ void printPath(double* dist, int dest)
 
 // The main function that calulates distances of shortest paths from src to all
 // vertices. It is a O(ELogV) function
-double* dijkstra(Graph* graph, int src)
+dijk* dijkstra(Graph* graph, int src)
 {
 	int V = graph->V;                               // Get the number of vertices in graph
 	double* dist = malloc(V * sizeof(double));      // dist values used to pick minimum weight edge in cut
-
+	int *pred = malloc(V * sizeof(int));
 	// minHeap represents set E
 	MinHeap* minHeap = createMinHeap(V);
 
@@ -349,6 +352,7 @@ double* dijkstra(Graph* graph, int src)
 		dist[v] = INT_MAX;
 		minHeap->array[v] = newMinHeapNode(v, dist[v]);
 		minHeap->pos[v] = v;
+		pred[v] = -1;
 	}
 
 	// Make dist value of src vertex as 0 so that it is extracted first
@@ -378,7 +382,7 @@ double* dijkstra(Graph* graph, int src)
 			if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX &&
 			    pCrawl->weight + dist[u] < dist[v]) {
 				dist[v] = dist[u] + pCrawl->weight;
-
+				pred[v] = u;
 				// update distance value in min heap also
 				decreaseKey(minHeap, v, dist[v]);
 			}
@@ -386,8 +390,11 @@ double* dijkstra(Graph* graph, int src)
 		}
 	}
 
+	dijk* res = malloc(sizeof(dijk));
+	res->dist = dist;
+	res->predecessor = pred;
 	// print the calculated shortest distances
-	return dist;
+	return res;
 }
 
 void printArr(int arr[], int n)

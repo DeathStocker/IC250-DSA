@@ -31,16 +31,16 @@ int readFile(char* filename)
 
 	// Testing
 	//dijkstra
+	printf("Graph - \n");
 	printGraph(g);
 	printf("Num edges = %d\n", g->E);
-	double* dist = dijkstra(g, 0);
-	printPath(dist, 3);
-
-	dist = bellmanford(g, 0);
-	printPath(dist, 3);
+	
+	printf("\nDijkstra - \n");
+	dijk* sp = dijkstra(g, 1);
+	printPath(sp->dist, 3);
 
 	// Degree
-	printf("Degree of [1] = %d\n\n", degreeVertex(g, 1));
+	printf("\nDegree of [1] = %d\n\n", degreeVertex(g, 1));
 
 	// Neighbours
 	int* neigh = neighboursVertex(g, 1);
@@ -50,10 +50,12 @@ int readFile(char* filename)
 	printf("\n\n");
 
 	// Deleting Edge.
+	printf("\nDeletion - \n");
 	deleteEdge(g, 3, 4);
 	printGraph(g);
 
 	// Adding Edge.
+	printf("\nAddition - \n");
 	addEdge(g, 4, 3, 3);
 	printGraph(g);
 
