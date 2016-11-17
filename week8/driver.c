@@ -34,6 +34,7 @@ int readFile(char* filename)
 	printf("Graph - \n");
 	printGraph(g);
 	printf("Num edges = %d\n", g->E);
+	
 	printf("\nDijkstra - \n");
 	dijk* sp = dijkstra(g, 1);
 	printPath(sp->dist, 3);
@@ -59,17 +60,18 @@ int readFile(char* filename)
 	printGraph(g);
 
 	// Bellmanford
-	printf("\nBellmanford - \n");
-	double* dist = bellmanford(g, 1);
-	printPath(dist, 3);
+	// dist = bellmanford(g, 1);
+	// printPath(dist, 3);
 
 	// DFS
-	printf("\nDFS - \n");
-	do_DFS(g, 0);
+	printf("\nDFS-\n");
+	GSList* dfs = do_DFS(g, 0);
+	printList(dfs);
 
 	//BFS
-	printf("\nBFS - \n");
-	do_BFS(g, 0);
+	printf("\nBFS-\n");
+	GSList* bfs = do_BFS(g, 0);
+	printList(bfs);
 
 	// Prim MST
 	printf("\nPrim MST - \n");
